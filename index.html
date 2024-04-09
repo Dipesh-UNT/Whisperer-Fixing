@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>MyFlix</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
+
+        .movie {
+            width: 150px;
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #333;
+            cursor: pointer;
+        }
+
+        .movie:hover {
+            box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.3);
+        }
+
+        img {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">MyFlix</a>
+            <form class="form-inline">
+                <label for="search">Search:</label>
+                <input id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+
+                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
+        </nav>
+    </header>
+
+    <div id="movies"></div>
+
+    <footer class="text-center">
+        <p>Copyright &copy; MyFlix</p>
+    </footer>
+
+    <script>
+        const apikey = "1a501fcb";
+        const moviesDiv = document.getElementById("movies");
+        async function getMovies() {
+            const response = await fetch(
+                //www.omdbapi.com/?apikey=${apikey}&s=matrix
+            );
+            const data = await response.json();
+
+            if (data.Response === "True") {
+                const movies = data.Search;
+
+                movies.forEach(movie => {
+                    const movieDiv = document.createElement("div");
+                    movieDiv.classList.add("movie");
+
+                    movieDiv.innerHTML = `
+        <img src="${movie.Poster}">
+        <p>${movie.Title}</p>
+        <small>${movie.Year}</small>
+      `;
+
+                    moviesDiv.appendChild(movieDiv);
+                });
+            }
+        }
+
+        getMovies();
+    </script>
+
+</body>
+
+</html>
